@@ -14,7 +14,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         tools:srcCompat="@tools:sample/avatars"
-        android:contentDescription="Movie Poster" />
+        android:contentDescription="@string/movie_poster" />
 
     <TextView
         android:id="@+id/tvTitle"
