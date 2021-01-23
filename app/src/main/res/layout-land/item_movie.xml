@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
     android:background="?selectableItemBackground"
-    android:padding="@dimen/padding"
-    android:focusable="true">
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="@dimen/padding">
 
     <ImageView
         android:id="@+id/ivPoster"
