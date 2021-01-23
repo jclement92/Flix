@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/padding">
 
     <ImageView
         android:id="@+id/ivPoster"
@@ -13,8 +14,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
-        tools:srcCompat="@tools:sample/avatars"
-        android:contentDescription="@string/movie_poster" />
+        android:contentDescription="@string/movie_poster"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tvTitle"
@@ -23,6 +24,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/ivPoster"
+        android:textColor="#E0E0E0"
         android:textSize="24sp"
         tools:text="Fast &amp; Furious Presents: Hobbs &amp; Shaw" />
 
@@ -34,6 +36,9 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/ivPoster"
+        android:ellipsize="end"
+        android:lines="8"
+        android:textColor="#BDBDBD"
         tools:text="A spinoff of the Fate of the Furious" />
 
 </RelativeLayout>
