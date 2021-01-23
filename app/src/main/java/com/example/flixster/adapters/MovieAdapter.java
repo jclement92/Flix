@@ -9,11 +9,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.flixster.R;
+import com.example.flixster.models.BackdropViewHolder;
 import com.example.flixster.models.Movie;
 import com.example.flixster.models.MovieViewHolder;
-import com.example.flixster.models.BackdropViewHolder;
 
 import java.util.List;
 
@@ -60,12 +59,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         switch (holder.getItemViewType()) {
             case BACKDROP:
                 BackdropViewHolder backdropViewHolder = (BackdropViewHolder) holder;
-                Glide
-                        .with(context)
-                        .load(movie)
-                        .placeholder(R.drawable.placeholder)
-                        .into(backdropViewHolder.getImageView());
-
+                backdropViewHolder.configureBackDropViewHolder(context, (String) movie);
                 break;
             case CARD:
             default:
