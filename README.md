@@ -23,9 +23,7 @@ Flix is an app that allows users to browse movies from the [The Movie Database A
 <img src='walkthrough.gif' title='Flix Video Walkthrough' height='650px' alt='Flix Video Walkthrough' />
 
 ### Notes
-Describe any challenges encountered while building the app.
-
-I wanted to implement a dark mode. However, having a light-colored status bar in APIs 21 and 22 (Android Lollipop) would not look good. This is because these APIs did not support changing the status bar text color.
+I wanted to implement dark mode. However, having a light-colored status bar in APIs 21 and 22 (Android Lollipop) would not look good. This is because these APIs did not support changing the status bar text color.
 
 ### Open-source libraries used
 - [Android Async HTTP](https://github.com/codepath/CPAsyncHttpClient) - Simple asynchronous HTTP requests with JSON parsing
