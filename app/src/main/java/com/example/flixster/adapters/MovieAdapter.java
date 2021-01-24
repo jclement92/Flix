@@ -22,7 +22,7 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final int CARD = 0, BACKDROP = 1;
+    private final int POSTER = 0, BACKDROP = 1;
     Context context;
     List<Object> movies;
 
@@ -44,7 +44,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 View backdropView = layoutInflater.inflate(R.layout.item_backdrop, parent, false);
                 viewHolder = new BackdropViewHolder(backdropView);
                 break;
-            case CARD:
+            case POSTER:
             default:
                 View cardView = layoutInflater.inflate(R.layout.item_movie, parent, false);
                 viewHolder = new MovieViewHolder(cardView);
@@ -64,7 +64,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 BackdropViewHolder backdropViewHolder = (BackdropViewHolder) holder;
                 backdropViewHolder.bind((String) movie);
                 break;
-            case CARD:
+            case POSTER:
             default:
                 MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
                 movieViewHolder.bind((Movie) movie);
@@ -79,11 +79,11 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        Object movie = movies.get(position);
+        Object object = movies.get(position);
 
-        if (movie instanceof Movie) {
-            return CARD;
-        } else if (movie instanceof String) {
+        if (object instanceof Movie) {
+            return POSTER;
+        } else if (object instanceof String) {
             return BACKDROP;
         }
         return -1;
