@@ -1,27 +1,30 @@
 package com.example.flixster.adapters;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.flixster.R;
-import com.example.flixster.models.BackdropViewHolder;
 import com.example.flixster.models.Movie;
-import com.example.flixster.models.MovieViewHolder;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private final int CARD = 0, BACKDROP = 1;
     Context context;
     List<Object> movies;
-
-    private final int CARD = 0, BACKDROP = 1;
 
     public MovieAdapter(Context context, List<Object> movies) {
         this.context = context;
@@ -59,12 +62,12 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         switch (holder.getItemViewType()) {
             case BACKDROP:
                 BackdropViewHolder backdropViewHolder = (BackdropViewHolder) holder;
-                backdropViewHolder.configureBackDropViewHolder(context, (String) movie);
+                backdropViewHolder.bind((String) movie);
                 break;
             case CARD:
             default:
                 MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
-                movieViewHolder.bind(context, (Movie) movie);
+                movieViewHolder.bind((Movie) movie);
                 break;
         }
     }
@@ -76,11 +79,62 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        if (movies.get(position) instanceof Movie) {
+        Object movie = movies.get(position);
+
+        if (movie instanceof Movie) {
             return CARD;
-        } else if (movies.get(position) instanceof String) {
+        } else if (movie instanceof String) {
             return BACKDROP;
         }
         return -1;
+    }
+
+    public class MovieViewHolder extends RecyclerView.ViewHolder {
+        public TextView tvTitle;
+        public TextView tvOverview;
+        public ImageView ivPoster;
+
+        public MovieViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvOverview = itemView.findViewById(R.id.tvOverview);
+            ivPoster = itemView.findViewById(R.id.ivPoster);
+        }
+
+        public void bind(@NotNull Movie movie) {
+            tvTitle.setText(movie.getTitle());
+            tvOverview.setText(movie.getOverview());
+            String imageUrl;
+            int orientation = context.getResources().getConfiguration().orientation;
+
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                imageUrl = movie.getBackdropPath();
+            } else {
+                imageUrl = movie.getPosterPath();
+            }
+
+            Glide
+                    .with(context)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.placeholder)
+                    .into(ivPoster);
+        }
+    }
+
+    public class BackdropViewHolder extends RecyclerView.ViewHolder {
+        public ImageView ivBackdrop;
+
+        public BackdropViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ivBackdrop = itemView.findViewById(R.id.ivBackdrop);
+        }
+
+        public void bind(@NonNull String movie) {
+            Glide
+                    .with(context)
+                    .load(movie)
+                    .placeholder(R.drawable.placeholder)
+                    .into(ivBackdrop);
+        }
     }
 }
