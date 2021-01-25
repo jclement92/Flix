@@ -21,7 +21,9 @@ Flix is an app that allows users to browse movies from the [The Movie Database A
 
 ### App Walkthrough GIF
 <img src='walkthrough_portrait.gif' title='Flix Video Walkthrough (Portrait mode)' height='650px' alt='Flix Video Walkthrough (Portrait mode)' />
-<img src='walkthrough_landscape.gif' title='Flix Video Walkthrough (Landscape mode)' height='650px' alt='Flix Video Walkthrough (Landscape mode)' />
+<img src='walkthrough_landscape.gif' title='Flix Video Walkthrough (Landscape mode)' alt='Flix Video Walkthrough (Landscape mode)' />
+
+Gif rotated with [Kapwing](https://www.kapwing.com/).
 
 ### Notes
 I wanted to implement dark mode. However, having a light-colored status bar in APIs 21 and 22 (Android Lollipop) would not look good. This is because these APIs did not support changing the status bar text color.
