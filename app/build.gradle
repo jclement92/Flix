@@ -38,9 +38,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // CodePath's http client library
-    implementation 'com.codepath.libraries:asynchttpclient:2.0.0'
+    implementation 'com.codepath.libraries:asynchttpclient:2.1.1'
 
     // Glide libraries for processing images
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    // Parceler Library
+    implementation 'org.parceler:parceler-api:1.1.12'
+    annotationProcessor 'org.parceler:parceler:1.1.12'
 }
