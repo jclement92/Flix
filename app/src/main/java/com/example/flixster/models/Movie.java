@@ -16,6 +16,7 @@ public class Movie {
     String title;
     String overview;
     Double voteAverage;
+    int movieId;
 
     // no-arg, empty constructor required for Parceler
     public Movie() {}
@@ -26,6 +27,7 @@ public class Movie {
         title = jsonObject.getString("title");
         overview = jsonObject.getString("overview");
         voteAverage = Double.parseDouble(jsonObject.getString("vote_average"));
+        movieId = jsonObject.getInt("id");
     }
 
     public Double getVoteAverage() {
@@ -50,6 +52,10 @@ public class Movie {
 
     public String getOverview() {
         return overview;
+    }
+
+    public int getMovieId() {
+        return movieId;
     }
 
     public static List<Object> fromJsonArray(JSONArray movieJsonArray) throws JSONException {
