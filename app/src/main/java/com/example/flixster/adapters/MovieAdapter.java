@@ -13,11 +13,13 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.databinding.BindingAdapter;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.flixster.R;
 import com.example.flixster.activities.MovieDetailActivity;
+import com.example.flixster.databinding.ItemBackdropBinding;
 import com.example.flixster.databinding.ItemMovieBinding;
 import com.example.flixster.models.Movie;
 
@@ -70,6 +72,8 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         switch (holder.getItemViewType()) {
             case BACKDROP:
                 BackdropViewHolder backdropViewHolder = (BackdropViewHolder) holder;
+                ((BackdropViewHolder) holder).binding.setVariable(BR.movie, movie);
+                ((BackdropViewHolder) holder).binding.executePendingBindings();
                 backdropViewHolder.bind((String) movie);
                 break;
             case POSTER:
@@ -146,24 +150,17 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public class BackdropViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public ImageView ivBackdrop;
+    public static class BackdropViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final ItemBackdropBinding binding;
 
         public BackdropViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivBackdrop = itemView.findViewById(R.id.ivBackdrop);
+            binding = ItemBackdropBinding.bind(itemView);
             itemView.setOnClickListener(this);
         }
 
         public void bind(@NonNull String movie) {
-            int radius = 30; // corner radius, higher value = more rounded
-            int margin = 10; // crop margin, set to 0 for corners with no crop
-            Glide
-                    .with(context)
-                    .load(movie)
-                    .placeholder(R.drawable.placeholder)
-                    .transform(new RoundedCornersTransformation(radius, margin))
-                    .into(ivBackdrop);
+            BindingAdapterUtils.loadImage(binding.ivBackdrop, movie);
         }
 
         @Override
@@ -178,7 +175,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public static class BindingAdapterUtils {
-        @BindingAdapter({"bind:imageUrl"})
+        @BindingAdapter({"imageUrl"})
         public static void loadImage(ImageView view, String url) {
             int radius = 30; // corner radius, higher value = more rounded
             int margin = 10; // crop margin, set to 0 for corners with no crop

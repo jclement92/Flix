@@ -1,10 +1,22 @@
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ivBackdrop"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:adjustViewBounds="true"
-    android:contentDescription="@string/movie_backdrop_poster"
-    android:padding="@dimen/padding"
-    android:scaleType="fitXY"
-    tools:srcCompat="@tools:sample/avatars" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="movieAdapter"
+            type="com.example.flixster.models.Movie" />
+    </data>
+
+    <ImageView
+        android:id="@+id/ivBackdrop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/movie_backdrop_poster"
+        android:padding="@dimen/padding"
+        android:scaleType="fitXY"
+        app:imageUrl="@{movieAdapter.backdropPath}"
+        tools:srcCompat="@tools:sample/avatars" />
+</layout>

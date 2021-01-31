@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="movie"
             type="com.example.flixster.models.Movie" />
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.MovieDetailActivity"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".activities.MovieDetailActivity">
 
         <com.google.android.youtube.player.YouTubePlayerView
             android:id="@+id/player"
             android:layout_width="match_parent"
-            android:layout_height="300dp"/>
+            android:layout_height="300dp" />
 
         <TextView
             android:id="@+id/tvTitle"
-            android:transitionName="profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@{movie.title}"
             android:textAppearance="@android:style/TextAppearance.Large"
             android:textColor="#E0E0E0"
-            android:text="@{movie.title}"
+            android:transitionName="profile"
             tools:text="Movie Title" />
 
         <RatingBar
@@ -41,9 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{movie.overview}"
-            tools:text="Movie description"
             android:textColor="#E0E0E0"
-            />
+            tools:text="Movie description" />
 
     </LinearLayout>
 </layout>
