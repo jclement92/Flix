@@ -53,7 +53,7 @@
             android:lines="8"
             android:text="@{movieAdapter.overview}"
             android:textColor="#BDBDBD"
-            tools:text="A spinoff of the Fate of the Furious" />
+            tools:text="A spin-off of the Fate of the Furious" />
 
     </RelativeLayout>
 </layout>
