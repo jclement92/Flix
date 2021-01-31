@@ -1,5 +1,4 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -17,6 +16,6 @@
         android:contentDescription="@string/movie_backdrop_poster"
         android:padding="@dimen/padding"
         android:scaleType="fitXY"
-        app:imageUrl="@{movieAdapter.backdropPath}"
+        android:src="@{movieAdapter.backdropPath}"
         tools:srcCompat="@tools:sample/avatars" />
 </layout>

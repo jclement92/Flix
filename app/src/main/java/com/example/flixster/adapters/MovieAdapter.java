@@ -175,7 +175,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public static class BindingAdapterUtils {
-        @BindingAdapter({"imageUrl"})
+        @BindingAdapter({"android:src"})
         public static void loadImage(ImageView view, String url) {
             int radius = 30; // corner radius, higher value = more rounded
             int margin = 10; // crop margin, set to 0 for corners with no crop
