@@ -3,11 +3,13 @@ package com.example.flixster.activities;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RatingBar;
-import android.widget.TextView;
+
+import androidx.databinding.DataBindingUtil;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.R;
+import com.example.flixster.databinding.ActivityMovieDetailBinding;
 import com.example.flixster.models.Movie;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -31,28 +33,25 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
     // the movie to display
     Movie movie;
 
-    TextView tvTitle;
-    TextView tvOverview;
     RatingBar rbVoteAverage;
 
     YouTubePlayerView youTubePlayerView;
+    ActivityMovieDetailBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
 
-        tvTitle = findViewById(R.id.tvTitle);
-        tvOverview = findViewById(R.id.tvOverview);
-        rbVoteAverage = findViewById(R.id.rbVoteAverage);
-        youTubePlayerView = findViewById(R.id.player);
+        rbVoteAverage = binding.rbVoteAverage;
+        youTubePlayerView = binding.player;
 
         // unwrap the movie passed in via intent, using its simple name as a key
         movie = Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
         Log.d(TAG, String.format("Showing details for '%s'", movie.getTitle()));
 
-        tvTitle.setText(movie.getTitle());
-        tvOverview.setText(movie.getOverview());
+        binding.setMovie(movie);
 
         float voteAverage = movie.getVoteAverage().floatValue();
         rbVoteAverage.setRating(voteAverage > 0 ? voteAverage / 2.0f : voteAverage);

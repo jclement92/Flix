@@ -17,7 +17,7 @@ public class Movie {
     String overview;
     Double voteAverage;
     int movieId;
-
+    
     // no-arg, empty constructor required for Parceler
     public Movie() {}
 

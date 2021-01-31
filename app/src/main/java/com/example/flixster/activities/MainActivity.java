@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,13 +39,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         movies = new ArrayList<>();
-
         movieAdapter = new MovieAdapter(this, movies);
+        rvMovies = binding.rvMovies;
 
-        rvMovies = findViewById(R.id.rvMovies);
         rvMovies.setAdapter(movieAdapter);
         rvMovies.setLayoutManager(new LinearLayoutManager(this));
 
