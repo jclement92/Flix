@@ -1,10 +1,36 @@
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ivBackdrop"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:adjustViewBounds="true"
-    android:contentDescription="@string/movie_backdrop_poster"
-    android:padding="@dimen/padding"
-    android:scaleType="fitXY"
-    tools:srcCompat="@tools:sample/avatars" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="movieAdapter"
+            type="com.example.flixster.models.Movie" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivBackdrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/movie_backdrop_poster"
+            android:padding="@dimen/padding"
+            android:scaleType="fitXY"
+            android:src="@{movieAdapter.backdropPath}"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:contentDescription="@string/movie_preview"
+            android:src="@drawable/ic_baseline_play_circle_outline_24" />
+
+    </RelativeLayout>
+</layout>

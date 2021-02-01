@@ -1,24 +1,34 @@
 package com.example.flixster.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.flixster.R;
+import com.example.flixster.activities.MovieDetailActivity;
+import com.example.flixster.databinding.ItemBackdropBinding;
+import com.example.flixster.databinding.ItemMovieBinding;
 import com.example.flixster.models.Movie;
 
 import org.jetbrains.annotations.NotNull;
+import org.parceler.Parcels;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -62,11 +72,15 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         switch (holder.getItemViewType()) {
             case BACKDROP:
                 BackdropViewHolder backdropViewHolder = (BackdropViewHolder) holder;
+                ((BackdropViewHolder) holder).binding.setVariable(BR.movie, movie);
+                ((BackdropViewHolder) holder).binding.executePendingBindings();
                 backdropViewHolder.bind((String) movie);
                 break;
             case POSTER:
             default:
                 MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
+                ((MovieViewHolder) holder).binding.setMovieAdapter((Movie) movie);
+                ((MovieViewHolder) holder).binding.executePendingBindings();
                 movieViewHolder.bind((Movie) movie);
                 break;
         }
@@ -89,21 +103,18 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return -1;
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvTitle;
-        public TextView tvOverview;
-        public ImageView ivPoster;
+    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final ItemMovieBinding binding;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvOverview = itemView.findViewById(R.id.tvOverview);
-            ivPoster = itemView.findViewById(R.id.ivPoster);
+            binding = ItemMovieBinding.bind(itemView);
+
+            // add this as the itemView's OnClickListener
+            itemView.setOnClickListener(this);
         }
 
         public void bind(@NotNull Movie movie) {
-            tvTitle.setText(movie.getTitle());
-            tvOverview.setText(movie.getOverview());
             String imageUrl;
             int orientation = context.getResources().getConfiguration().orientation;
 
@@ -113,28 +124,68 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 imageUrl = movie.getPosterPath();
             }
 
-            Glide
-                    .with(context)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.placeholder)
-                    .into(ivPoster);
+            BindingAdapterUtils.loadImage(binding.ivPoster, imageUrl);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+
+            if (position != RecyclerView.NO_POSITION) {
+                Movie movie = (Movie) movies.get(position);
+                Intent intent = new Intent(context, MovieDetailActivity.class);
+
+                // serialize the movie using parceler, use its short name as a key
+                intent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movie));
+
+                // Attach shared transition
+                ActivityOptionsCompat optionsCompat =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                (Activity) context,
+                                binding.tvTitle,
+                                "title");
+
+                context.startActivity(intent, optionsCompat.toBundle());
+            }
         }
     }
 
-    public class BackdropViewHolder extends RecyclerView.ViewHolder {
-        public ImageView ivBackdrop;
+    public static class BackdropViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final ItemBackdropBinding binding;
 
         public BackdropViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivBackdrop = itemView.findViewById(R.id.ivBackdrop);
+            binding = ItemBackdropBinding.bind(itemView);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(@NonNull String movie) {
+            BindingAdapterUtils.loadImage(binding.ivBackdrop, movie);
+        }
+
+        @Override
+        public void onClick(View v) {
+//            int position = getAdapterPosition();
+//
+//            if (position != RecyclerView.NO_POSITION) {
+//                Object movie = movies.get(position);
+//
+//            }
+        }
+    }
+
+    public static class BindingAdapterUtils {
+        @BindingAdapter({"android:src"})
+        public static void loadImage(ImageView view, String url) {
+            int radius = 30; // corner radius, higher value = more rounded
+            int margin = 10; // crop margin, set to 0 for corners with no crop
+
             Glide
-                    .with(context)
-                    .load(movie)
+                    .with(view.getContext())
+                    .load(url)
                     .placeholder(R.drawable.placeholder)
-                    .into(ivBackdrop);
+                    .transform(new RoundedCornersTransformation(radius, margin))
+                    .into(view);
         }
     }
 }
