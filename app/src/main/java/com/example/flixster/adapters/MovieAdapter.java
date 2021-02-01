@@ -183,6 +183,19 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             Glide
                     .with(view.getContext())
                     .load(url)
+//                    .listener(new RequestListener<Drawable>() {
+//                        @Override
+//                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            view.setImageResource(R.drawable.ic_launcher_background);
+//                            return false;
+//                        }
+//
+//                        @Override
+//                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            view.setImageResource(R.drawable.ic_launcher_foreground);
+//                            return false;
+//                        }
+//                    })
                     .placeholder(R.drawable.placeholder)
                     .transform(new RoundedCornersTransformation(radius, margin))
                     .into(view);
