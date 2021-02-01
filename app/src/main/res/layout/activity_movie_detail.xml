@@ -1,40 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.MovieDetailActivity"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.youtube.player.YouTubePlayerView
-        android:id="@+id/player"
+    <data>
+
+        <variable
+            name="movie"
+            type="com.example.flixster.models.Movie" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activities.MovieDetailActivity">
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:transitionName="profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@android:style/TextAppearance.Large"
-        android:textColor="#E0E0E0"
-        tools:text="Movie Title" />
+        <com.google.android.youtube.player.YouTubePlayerView
+            android:id="@+id/player"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
 
-    <RatingBar
-        android:id="@+id/rbVoteAverage"
-        style="@style/Widget.AppCompat.RatingBar.Indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:isIndicator="true"
-        android:numStars="10"
-        android:stepSize="0.5" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{movie.title}"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="#E0E0E0"
+            android:transitionName="profile"
+            tools:text="Movie Title" />
 
-    <TextView
-        android:id="@+id/tvOverview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Movie description"
-        android:textColor="#E0E0E0"
-        />
+        <RatingBar
+            android:id="@+id/rbVoteAverage"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:numStars="10"
+            android:stepSize="0.5" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvOverview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{movie.overview}"
+            android:textColor="#E0E0E0"
+            tools:text="Movie description" />
+
+    </LinearLayout>
+</layout>

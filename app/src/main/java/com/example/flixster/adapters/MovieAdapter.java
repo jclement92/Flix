@@ -9,21 +9,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.flixster.R;
 import com.example.flixster.activities.MovieDetailActivity;
+import com.example.flixster.databinding.ItemBackdropBinding;
+import com.example.flixster.databinding.ItemMovieBinding;
 import com.example.flixster.models.Movie;
 
 import org.jetbrains.annotations.NotNull;
 import org.parceler.Parcels;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -67,11 +72,15 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         switch (holder.getItemViewType()) {
             case BACKDROP:
                 BackdropViewHolder backdropViewHolder = (BackdropViewHolder) holder;
+                ((BackdropViewHolder) holder).binding.setVariable(BR.movie, movie);
+                ((BackdropViewHolder) holder).binding.executePendingBindings();
                 backdropViewHolder.bind((String) movie);
                 break;
             case POSTER:
             default:
                 MovieViewHolder movieViewHolder = (MovieViewHolder) holder;
+                ((MovieViewHolder) holder).binding.setMovieAdapter((Movie) movie);
+                ((MovieViewHolder) holder).binding.executePendingBindings();
                 movieViewHolder.bind((Movie) movie);
                 break;
         }
@@ -95,22 +104,17 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView tvTitle;
-        public TextView tvOverview;
-        public ImageView ivPoster;
+        final ItemMovieBinding binding;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvOverview = itemView.findViewById(R.id.tvOverview);
-            ivPoster = itemView.findViewById(R.id.ivPoster);
+            binding = ItemMovieBinding.bind(itemView);
+
             // add this as the itemView's OnClickListener
             itemView.setOnClickListener(this);
         }
 
         public void bind(@NotNull Movie movie) {
-            tvTitle.setText(movie.getTitle());
-            tvOverview.setText(movie.getOverview());
             String imageUrl;
             int orientation = context.getResources().getConfiguration().orientation;
 
@@ -120,11 +124,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 imageUrl = movie.getPosterPath();
             }
 
-            Glide
-                    .with(context)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.placeholder)
-                    .into(ivPoster);
+            BindingAdapterUtils.loadImage(binding.ivPoster, imageUrl);
         }
 
         @Override
@@ -134,29 +134,33 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             if (position != RecyclerView.NO_POSITION) {
                 Movie movie = (Movie) movies.get(position);
                 Intent intent = new Intent(context, MovieDetailActivity.class);
+
                 // serialize the movie using parceler, use its short name as a key
                 intent.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movie));
-                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, tvTitle, "title");
+
+                // Attach shared transition
+                ActivityOptionsCompat optionsCompat =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                (Activity) context,
+                                binding.tvTitle,
+                                "title");
+
                 context.startActivity(intent, optionsCompat.toBundle());
             }
         }
     }
 
-    public class BackdropViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public ImageView ivBackdrop;
+    public static class BackdropViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final ItemBackdropBinding binding;
 
         public BackdropViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivBackdrop = itemView.findViewById(R.id.ivBackdrop);
+            binding = ItemBackdropBinding.bind(itemView);
             itemView.setOnClickListener(this);
         }
 
         public void bind(@NonNull String movie) {
-            Glide
-                    .with(context)
-                    .load(movie)
-                    .placeholder(R.drawable.placeholder)
-                    .into(ivBackdrop);
+            BindingAdapterUtils.loadImage(binding.ivBackdrop, movie);
         }
 
         @Override
@@ -167,6 +171,34 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 //                Object movie = movies.get(position);
 //
 //            }
+        }
+    }
+
+    public static class BindingAdapterUtils {
+        @BindingAdapter({"android:src"})
+        public static void loadImage(ImageView view, String url) {
+            int radius = 30; // corner radius, higher value = more rounded
+            int margin = 10; // crop margin, set to 0 for corners with no crop
+
+            Glide
+                    .with(view.getContext())
+                    .load(url)
+//                    .listener(new RequestListener<Drawable>() {
+//                        @Override
+//                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                            view.setImageResource(R.drawable.ic_launcher_background);
+//                            return false;
+//                        }
+//
+//                        @Override
+//                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                            view.setImageResource(R.drawable.ic_launcher_foreground);
+//                            return false;
+//                        }
+//                    })
+                    .placeholder(R.drawable.placeholder)
+                    .transform(new RoundedCornersTransformation(radius, margin))
+                    .into(view);
         }
     }
 }
