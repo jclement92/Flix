@@ -50,7 +50,7 @@ I wanted to implement dark mode. However, having a light-colored status bar in A
 ### Open-source libraries used
 - [Android Async HTTP](https://github.com/codepath/CPAsyncHttpClient) - Simple asynchronous HTTP requests with JSON parsing
 - [Glide](https://github.com/bumptech/glide) - Image loading and caching library for Androids
-- Parceler: For opening intents with objects passed
+- Parceler - For opening intents with objects passed
 
 ## License
 
